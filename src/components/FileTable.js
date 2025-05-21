@@ -23,23 +23,27 @@ function FileTable({ files, locks, username }) {
         </tr>
       </thead>
       <tbody>
-        {files.map(file => {
-          const lock = locks[file];
-          return (
-            <tr key={file}>
-              <td>{file}</td>
-              <td>{lock ? "🔒 Locked" : "🔓 Unlocked"}</td>
-              <td>{lock ? lock.locked_by : "-"}</td>
-              <td>
-                {!lock ? (
-                  <button onClick={() => handleLock(file)}>Lock</button>
-                ) : (
-                  <button onClick={() => handleUnlock(file)}>Unlock</button>
-                )}
-              </td>
-            </tr>
-          );
-        })}
+        {files.length === 0 ? (
+          <tr><td colSpan="4" style={{ textAlign: "center" }}>No files found in S3 bucket.</td></tr>
+        ) : (
+          files.map(file => {
+            const lock = locks[file];
+            return (
+              <tr key={file}>
+                <td>{file}</td>
+                <td>{lock ? "🔒 Locked" : "🔓 Unlocked"}</td>
+                <td>{lock ? lock.locked_by : "-"}</td>
+                <td>
+                  {!lock ? (
+                    <button onClick={() => handleLock(file)}>Lock</button>
+                  ) : (
+                    <button onClick={() => handleUnlock(file)}>Unlock</button>
+                  )}
+                </td>
+              </tr>
+            );
+          })
+        )}
       </tbody>
     </table>
   );
